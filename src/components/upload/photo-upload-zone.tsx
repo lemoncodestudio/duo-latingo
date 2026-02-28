@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef } from "react";
+import { Camera } from "lucide-react";
 
 interface PhotoUploadZoneProps {
   onFileSelect: (file: File) => void;
@@ -31,17 +32,17 @@ export function PhotoUploadZone({ onFileSelect, preview }: PhotoUploadZoneProps)
   if (preview) {
     return (
       <div className="space-y-2">
-        <div className="relative rounded-lg overflow-hidden border">
+        <div className="relative rounded-2xl overflow-hidden border border-white/[0.08]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={preview}
             alt="Geüploade foto"
-            className="w-full max-h-64 object-contain bg-gray-50"
+            className="w-full max-h-64 object-contain bg-secondary"
           />
         </div>
         <button
           onClick={() => inputRef.current?.click()}
-          className="text-sm text-blue-500 hover:underline"
+          className="text-sm text-ocean font-bold hover:underline"
         >
           Andere foto kiezen
         </button>
@@ -61,10 +62,12 @@ export function PhotoUploadZone({ onFileSelect, preview }: PhotoUploadZoneProps)
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
       onClick={() => inputRef.current?.click()}
-      className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#58CC02] hover:bg-green-50/50 transition-colors"
+      className="border-2 border-dashed border-teal/15 rounded-2xl p-8 text-center cursor-pointer hover:border-teal/30 hover:bg-teal/4 transition-colors bg-secondary"
     >
-      <div className="text-4xl mb-2">📷</div>
-      <p className="font-medium">Sleep een foto hierheen</p>
+      <div className="w-14 h-14 rounded-full bg-ocean/12 border border-ocean/15 flex items-center justify-center mx-auto mb-3">
+        <Camera className="size-7 text-ocean" />
+      </div>
+      <p className="font-bold text-lg text-foreground">Sleep een foto hierheen</p>
       <p className="text-sm text-muted-foreground mt-1">
         of klik om een foto te selecteren
       </p>

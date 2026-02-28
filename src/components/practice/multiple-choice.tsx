@@ -11,6 +11,13 @@ interface MultipleChoiceProps {
   feedback: { isCorrect: boolean; correctAnswer: string } | null;
 }
 
+const badgeColors = [
+  "bg-ocean text-white",
+  "bg-teal text-teal-fg",
+  "bg-amber text-amber-fg",
+  "bg-purple text-white",
+];
+
 export function MultipleChoice({
   question,
   onAnswer,
@@ -49,18 +56,27 @@ export function MultipleChoice({
               onClick={() => handleSelect(option)}
               disabled={disabled}
               className={cn(
-                "w-full p-4 rounded-xl border-2 text-left font-medium transition-all",
-                "hover:border-gray-300 active:scale-[0.98]",
-                !feedback && !isSelected && "border-gray-200 bg-white",
-                !feedback && isSelected && "border-blue-400 bg-blue-50",
+                "w-full p-4 rounded-2xl border-2 border-b-4 text-left font-medium transition-all flex items-center gap-3",
+                "active:border-b-2 active:translate-y-[2px]",
+                !feedback && !isSelected && "border-white/[0.08] bg-card hover:border-white/[0.15]",
+                !feedback && isSelected && "border-ocean-dark bg-ocean/12 border-b-4",
                 isCorrectOption &&
-                  "border-[#58CC02] bg-green-50 text-[#58CC02]",
+                  "border-teal-dark bg-teal/12 text-teal border-b-4 animate-scale-pop",
                 isWrongSelection &&
-                  "border-[#FF4B4B] bg-red-50 text-[#FF4B4B]",
+                  "border-rose-dark bg-rose/12 text-rose border-b-4 animate-shake-wrong",
                 disabled && !isCorrectOption && !isWrongSelection && "opacity-50"
               )}
             >
-              <span className="text-sm text-muted-foreground mr-2">
+              <span
+                className={cn(
+                  "inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold shrink-0",
+                  isCorrectOption
+                    ? "bg-teal text-teal-fg"
+                    : isWrongSelection
+                    ? "bg-rose text-white"
+                    : badgeColors[index % badgeColors.length]
+                )}
+              >
                 {index + 1}
               </span>
               {option}

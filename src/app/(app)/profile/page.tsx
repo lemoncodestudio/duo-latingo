@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StreakDisplay } from "@/components/dashboard/streak-display";
 import { SignOutButton } from "@/components/shared/sign-out-button";
 
@@ -26,25 +25,25 @@ export default async function ProfilePage() {
     .select("*", { count: "exact", head: true })
     .eq("user_id", user!.id);
 
+  const displayName = profile?.display_name || "Gebruiker";
+  const initial = displayName.charAt(0).toUpperCase();
+
   return (
     <div className="max-w-lg mx-auto p-4 space-y-6">
-      <h1 className="text-2xl font-bold">Profiel</h1>
+      <h1 className="text-2xl font-extrabold">Profiel</h1>
 
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-2xl">
-              👤
-            </div>
-            <div>
-              <h2 className="text-xl font-bold">
-                {profile?.display_name || "Gebruiker"}
-              </h2>
-              <p className="text-sm text-muted-foreground">{user?.email}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center gap-4">
+        <div
+          className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-extrabold text-white border-2 border-teal/20"
+          style={{ background: "var(--gradient-hero)" }}
+        >
+          {initial}
+        </div>
+        <div>
+          <h2 className="text-xl font-bold">{displayName}</h2>
+          <p className="text-sm text-muted-foreground">{user?.email}</p>
+        </div>
+      </div>
 
       <StreakDisplay
         streak={profile?.streak || 0}
@@ -52,54 +51,30 @@ export default async function ProfilePage() {
       />
 
       <div className="grid grid-cols-2 gap-3">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-muted-foreground font-normal">
-              Totaal XP
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-[#58CC02]">
-              {profile?.xp || 0}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-muted-foreground font-normal">
-              Sessies
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-purple-500">
-              {totalSessions || 0}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-muted-foreground font-normal">
-              Woorden geleerd
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-blue-500">
-              {totalWords || 0}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-muted-foreground font-normal">
-              Langste streak
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-[#FF9600]">
-              {profile?.longest_streak || 0}
-            </p>
-          </CardContent>
-        </Card>
+        <div className="rounded-2xl p-4 border border-teal/12 bg-[linear-gradient(160deg,_theme(colors.teal/0.15)_0%,_theme(colors.teal/0.04)_100%)]">
+          <p className="text-sm text-muted-foreground font-medium">Totaal XP</p>
+          <p className="text-3xl font-extrabold text-teal mt-1">
+            {profile?.xp || 0}
+          </p>
+        </div>
+        <div className="rounded-2xl p-4 border border-purple/12 bg-[linear-gradient(160deg,_theme(colors.purple/0.15)_0%,_theme(colors.purple/0.04)_100%)]">
+          <p className="text-sm text-muted-foreground font-medium">Sessies</p>
+          <p className="text-3xl font-extrabold text-purple-light mt-1">
+            {totalSessions || 0}
+          </p>
+        </div>
+        <div className="rounded-2xl p-4 border border-ocean/12 bg-[linear-gradient(160deg,_theme(colors.ocean/0.15)_0%,_theme(colors.ocean/0.04)_100%)]">
+          <p className="text-sm text-muted-foreground font-medium">Woorden geleerd</p>
+          <p className="text-3xl font-extrabold text-ocean mt-1">
+            {totalWords || 0}
+          </p>
+        </div>
+        <div className="rounded-2xl p-4 border border-amber/12 bg-[linear-gradient(160deg,_theme(colors.amber/0.15)_0%,_theme(colors.amber/0.04)_100%)]">
+          <p className="text-sm text-muted-foreground font-medium">Langste streak</p>
+          <p className="text-3xl font-extrabold text-amber mt-1">
+            {profile?.longest_streak || 0}
+          </p>
+        </div>
       </div>
 
       <SignOutButton />

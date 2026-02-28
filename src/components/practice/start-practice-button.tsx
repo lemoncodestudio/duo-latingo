@@ -28,7 +28,6 @@ export function StartPracticeButton({ courseId }: StartPracticeButtonProps) {
       }
 
       const { sessionId, questions } = await res.json();
-      // Store questions in sessionStorage for the practice page
       sessionStorage.setItem(`practice-${sessionId}`, JSON.stringify(questions));
       router.push(`/practice/${sessionId}`);
     } catch {
@@ -40,12 +39,21 @@ export function StartPracticeButton({ courseId }: StartPracticeButtonProps) {
 
   return (
     <Button
+      variant="duo"
+      size="duo"
       onClick={handleStart}
       disabled={loading}
-      size="lg"
-      className="w-full bg-[#58CC02] hover:bg-[#4CAF00] text-white font-bold text-lg h-14 rounded-xl"
+      className="w-full relative overflow-hidden"
     >
-      {loading ? "Sessie laden..." : "🧠 Oefenen"}
+      {loading ? (
+        "Sessie laden..."
+      ) : (
+        <span className="flex items-center justify-center gap-2.5">
+          <span>▶</span>
+          <span>Start oefensessie</span>
+        </span>
+      )}
+      <span className="absolute top-0 left-[-100%] w-[60%] h-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent)] animate-cta-shine pointer-events-none" />
     </Button>
   );
 }

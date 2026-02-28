@@ -1,6 +1,8 @@
 "use client";
 
-import { Progress } from "@/components/ui/progress";
+import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface PracticeProgressBarProps {
   current: number;
@@ -13,16 +15,38 @@ export function PracticeProgressBar({
   total,
   results,
 }: PracticeProgressBarProps) {
+  const router = useRouter();
   const percentage = total > 0 ? (current / total) * 100 : 0;
 
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-sm">
-        <button className="text-gray-400 hover:text-gray-600 text-lg">✕</button>
+        <button
+          onClick={() => router.push("/dashboard")}
+          className="text-dim hover:text-soft"
+        >
+          <X className="size-6" />
+        </button>
         <div className="flex-1 mx-4">
-          <Progress value={percentage} className="h-3 bg-gray-200 [&>div]:bg-[#58CC02]" />
+          <div className="relative h-4 bg-white/[0.06] rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                width: `${percentage}%`,
+                background: "var(--gradient-hero)",
+              }}
+            />
+            {/* Shine gradient overlay */}
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.05) 100%)",
+              }}
+            />
+          </div>
         </div>
-        <span className="text-muted-foreground font-medium">
+        <span className="text-muted-foreground font-bold">
           {current}/{total}
         </span>
       </div>
@@ -30,13 +54,14 @@ export function PracticeProgressBar({
         {results.map((result, i) => (
           <div
             key={i}
-            className={`h-1 flex-1 rounded-full transition-colors ${
+            className={cn(
+              "h-1.5 flex-1 rounded-full transition-colors",
               result === null
-                ? "bg-gray-200"
+                ? "bg-white/[0.06]"
                 : result
-                ? "bg-[#58CC02]"
-                : "bg-[#FF4B4B]"
-            }`}
+                ? "bg-teal animate-scale-pop"
+                : "bg-rose"
+            )}
           />
         ))}
       </div>

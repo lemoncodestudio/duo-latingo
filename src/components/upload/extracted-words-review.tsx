@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 interface ExtractedWord {
   latin: string;
@@ -56,35 +57,35 @@ export function ExtractedWordsReview({
       {words.map((word, index) => (
         <div
           key={index}
-          className="flex items-start gap-2 p-3 bg-gray-50 rounded-lg"
+          className="flex items-start gap-2 p-3 bg-secondary rounded-xl border border-white/[0.08] transition-transform hover:-translate-y-0.5"
         >
           <div className="flex-1 grid grid-cols-2 gap-2">
             <Input
               placeholder="Latijn"
               value={word.latin}
               onChange={(e) => updateWord(index, "latin", e.target.value)}
-              className="bg-white text-sm"
+              className="bg-card border-white/[0.08] text-sm"
             />
             <Input
               placeholder="Nederlands"
               value={word.dutch}
               onChange={(e) => updateWord(index, "dutch", e.target.value)}
-              className="bg-white text-sm"
+              className="bg-card border-white/[0.08] text-sm"
             />
           </div>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => removeWord(index)}
-            className="text-red-400 hover:text-red-600 hover:bg-red-50 px-2"
+            className="text-rose hover:text-rose-dark hover:bg-rose/12 px-2"
           >
-            ✕
+            <X className="size-4" />
           </Button>
         </div>
       ))}
 
       <Button
-        variant="outline"
+        variant="duo-outline"
         size="sm"
         onClick={addWord}
         className="w-full"

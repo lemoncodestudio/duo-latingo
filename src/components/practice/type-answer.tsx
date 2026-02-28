@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import type { Question } from "@/lib/practice/question-generator";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +38,7 @@ export function TypeAnswer({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
+        <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={
@@ -50,20 +49,24 @@ export function TypeAnswer({
           disabled={disabled}
           autoFocus
           className={cn(
-            "text-center text-lg h-14 rounded-xl border-2",
+            "w-full text-center text-xl font-semibold h-16 rounded-2xl border-2 border-b-4 bg-card px-4 outline-none transition-all text-foreground placeholder:text-white/25",
+            "focus:border-ocean-dark focus:ring-2 focus:ring-ocean/25",
+            !feedback && "border-white/[0.08]",
             feedback &&
               feedback.isCorrect &&
-              "border-[#58CC02] bg-green-50",
+              "border-teal-dark bg-teal/12 animate-scale-pop",
             feedback &&
               !feedback.isCorrect &&
-              "border-[#FF4B4B] bg-red-50"
+              "border-rose-dark bg-rose/12 animate-shake-wrong"
           )}
         />
         {!feedback && (
           <Button
             type="submit"
+            variant="duo"
+            size="duo"
             disabled={!input.trim() || disabled}
-            className="w-full bg-[#58CC02] hover:bg-[#4CAF00] text-white font-bold h-12 rounded-xl"
+            className="w-full"
           >
             Controleer
           </Button>
@@ -71,9 +74,9 @@ export function TypeAnswer({
       </form>
 
       {feedback && !feedback.isCorrect && (
-        <div className="text-center p-3 bg-red-50 rounded-xl border border-red-200">
+        <div className="text-center p-3 bg-rose/12 rounded-2xl border border-rose/20">
           <p className="text-sm text-muted-foreground">Correcte antwoord:</p>
-          <p className="font-bold text-lg text-[#FF4B4B]">
+          <p className="font-bold text-lg text-rose">
             {feedback.correctAnswer}
           </p>
         </div>

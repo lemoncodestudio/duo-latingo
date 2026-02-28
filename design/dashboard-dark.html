@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Duo Latingo — Dark Ocean Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    /* ═══════════════════════════════════════════
+       DESIGN TOKENS — DARK OCEAN THEME
+       ═══════════════════════════════════════════ */
+    :root {
+      /* Deep ocean backgrounds */
+      --bg-abyss: #060e1a;
+      --bg-deep: #0a1628;
+      --bg-ocean: #0f1f3a;
+      --bg-surface: #152548;
+      --bg-raised: #1a2d55;
+      --bg-glass: rgba(21, 37, 72, 0.65);
+
+      /* Teal / Turquoise */
+      --teal: #40E0D0;
+      --teal-bright: #5BEAD6;
+      --teal-glow: rgba(64, 224, 208, 0.25);
+      --teal-subtle: rgba(64, 224, 208, 0.08);
+
+      /* Purple */
+      --purple: #9370DB;
+      --purple-bright: #B08AEF;
+      --purple-glow: rgba(147, 112, 219, 0.25);
+
+      /* Accent greens */
+      --green: #4ADE80;
+      --green-bright: #6EE7A0;
+      --green-glow: rgba(74, 222, 128, 0.2);
+
+      /* Warm accents */
+      --amber: #FBBF24;
+      --amber-glow: rgba(251, 191, 36, 0.2);
+      --coral: #FB7185;
+      --coral-glow: rgba(251, 113, 133, 0.15);
+
+      /* Text */
+      --text-primary: #E8EDF5;
+      --text-secondary: rgba(232, 237, 245, 0.6);
+      --text-tertiary: rgba(232, 237, 245, 0.35);
+
+      /* Gradients */
+      --gradient-hero: linear-gradient(135deg, #40E0D0 0%, #5BEAD6 40%, #9370DB 100%);
+      --gradient-teal: linear-gradient(135deg, #40E0D0, #2BC4B4);
+      --gradient-purple: linear-gradient(135deg, #9370DB, #7C5BBF);
+      --gradient-green: linear-gradient(135deg, #4ADE80, #22C55E);
+      --gradient-amber: linear-gradient(135deg, #FBBF24, #F59E0B);
+      --gradient-coral: linear-gradient(135deg, #FB7185, #F43F5E);
+      --gradient-card: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-ocean) 100%);
+      --gradient-glow: radial-gradient(ellipse at 50% 0%, rgba(64, 224, 208, 0.08) 0%, transparent 70%);
+
+      /* Borders */
+      --border-subtle: rgba(64, 224, 208, 0.08);
+      --border-card: rgba(64, 224, 208, 0.12);
+      --border-hover: rgba(64, 224, 208, 0.25);
+
+      /* Shadows */
+      --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.2);
+      --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-glow-teal: 0 0 30px rgba(64, 224, 208, 0.15), 0 0 60px rgba(64, 224, 208, 0.05);
+      --shadow-glow-purple: 0 0 30px rgba(147, 112, 219, 0.15);
+      --shadow-button: 0 4px 0 #1a6b63, 0 6px 20px rgba(0,0,0,0.3);
+
+      /* Radii */
+      --radius-sm: 12px;
+      --radius-md: 16px;
+      --radius-lg: 20px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      background: var(--bg-abyss);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 100px;
+    }
+
+    /* ═══════════════════════════════════════════
+       AMBIENT BACKGROUND — UNDERWATER ATMOSPHERE
+       ═══════════════════════════════════════════ */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -40%;
+      left: -20%;
+      width: 140%;
+      height: 100%;
+      background:
+        radial-gradient(ellipse 600px 400px at 20% 10%, rgba(64, 224, 208, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 500px at 80% 20%, rgba(147, 112, 219, 0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 800px 300px at 50% 60%, rgba(64, 224, 208, 0.03) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: ambient-drift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes ambient-drift {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(20px, 10px) rotate(1deg); }
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: float-particle linear infinite;
+    }
+
+    @keyframes float-particle {
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 0;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       MOBILE SHELL (max-w ~430px centered)
+       ═══════════════════════════════════════════ */
+    .phone-frame {
+      position: relative;
+      z-index: 1;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    /* ═══════════════════════════════════════════
+       TOP NAVBAR
+       ═══════════════════════════════════════════ */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(6, 14, 26, 0.85);
+      backdrop-filter: blur(20px) saturate(1.4);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-logo {
+      width: 36px;
+      height: 36px;
+      filter: drop-shadow(0 0 8px rgba(64, 224, 208, 0.3));
+    }
+
+    .navbar-title {
+      font-family: 'Baloo 2', 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      background: var(--gradient-hero);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .navbar-streak {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--amber-glow);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--amber);
+    }
+
+    .navbar-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--teal);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--teal);
+      box-shadow: 0 0 12px rgba(64, 224, 208, 0.2);
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO HEADER
+       ═══════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      padding: 28px 24px 32px;
+      background: linear-gradient(170deg, rgba(64, 224, 208, 0.12) 0%, rgba(147, 112, 219, 0.08) 50%, transparent 100%);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(64, 224, 208, 0.1) 0%, transparent 70%);
+      animation: hero-pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes hero-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+
+    .hero-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-text h1 {
+      font-family: 'Baloo 2', 'Nunito', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text-primary);
+    }
+
+    .hero-text h1 span {
+      background: var(--gradient-hero);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-text p {
+      margin-top: 6px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .hero-mascot {
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 20px rgba(64, 224, 208, 0.25));
+      animation: mascot-bob 3s ease-in-out infinite;
+    }
+
+    @keyframes mascot-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* ═══════════════════════════════════════════
+       CONTENT AREA
+       ═══════════════════════════════════════════ */
+    .content {
+      padding: 0 16px;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    /* ═══════════════════════════════════════════
+       STREAK CARD
+       ═══════════════════════════════════════════ */
+    .streak-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.12) 0%, rgba(245, 158, 11, 0.06) 100%);
+      border: 1px solid rgba(251, 191, 36, 0.15);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .streak-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 120px;
+      height: 100%;
+      background: radial-gradient(circle at 100% 50%, rgba(251, 191, 36, 0.1), transparent 70%);
+    }
+
+    .streak-icon {
+      position: relative;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      animation: flame-dance 1s ease-in-out infinite;
+    }
+
+    @keyframes flame-dance {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.1) rotate(-3deg); }
+      50% { transform: scale(1.05) rotate(0deg); }
+      75% { transform: scale(1.1) rotate(3deg); }
+    }
+
+    .streak-flame-glow {
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.3), transparent 70%);
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.5; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    .streak-info {
+      position: relative;
+      z-index: 1;
+    }
+
+    .streak-count {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .streak-number {
+      font-family: 'Baloo 2', 'Nunito', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--amber);
+      line-height: 1;
+    }
+
+    .streak-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: rgba(251, 191, 36, 0.7);
+    }
+
+    .streak-sub {
+      font-size: 0.78rem;
+      color: var(--text-tertiary);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .streak-days {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .streak-day {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 800;
+      border: 2px solid rgba(251, 191, 36, 0.15);
+      color: var(--text-tertiary);
+    }
+
+    .streak-day.active {
+      background: var(--gradient-amber);
+      border-color: transparent;
+      color: #1a0800;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.3);
+    }
+
+    .streak-day.today {
+      border-color: var(--amber);
+      color: var(--amber);
+      animation: today-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes today-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.3); }
+      50% { box-shadow: 0 0 0 4px rgba(251, 191, 36, 0); }
+    }
+
+    /* ═══════════════════════════════════════════
+       STATS CARDS
+       ═══════════════════════════════════════════ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat-card {
+      position: relative;
+      padding: 18px 12px;
+      border-radius: var(--radius-lg);
+      text-align: center;
+      overflow: hidden;
+      border: 1px solid transparent;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0.12;
+      z-index: 0;
+    }
+
+    .stat-card.teal {
+      background: linear-gradient(160deg, rgba(64, 224, 208, 0.15) 0%, rgba(64, 224, 208, 0.04) 100%);
+      border-color: rgba(64, 224, 208, 0.12);
+    }
+    .stat-card.teal:hover { box-shadow: var(--shadow-glow-teal); }
+
+    .stat-card.purple {
+      background: linear-gradient(160deg, rgba(147, 112, 219, 0.15) 0%, rgba(147, 112, 219, 0.04) 100%);
+      border-color: rgba(147, 112, 219, 0.12);
+    }
+    .stat-card.purple:hover { box-shadow: var(--shadow-glow-purple); }
+
+    .stat-card.green {
+      background: linear-gradient(160deg, rgba(74, 222, 128, 0.15) 0%, rgba(74, 222, 128, 0.04) 100%);
+      border-color: rgba(74, 222, 128, 0.12);
+    }
+    .stat-card.green:hover { box-shadow: 0 0 30px rgba(74, 222, 128, 0.15); }
+
+    .stat-icon {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-value {
+      font-family: 'Baloo 2', 'Nunito', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-card.teal .stat-value { color: var(--teal); }
+    .stat-card.purple .stat-value { color: var(--purple-bright); }
+    .stat-card.green .stat-value { color: var(--green); }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════════
+       PRACTICE CTA BUTTON
+       ═══════════════════════════════════════════ */
+    .practice-cta {
+      display: block;
+      width: 100%;
+      padding: 18px 24px;
+      margin-top: 20px;
+      background: var(--gradient-hero);
+      border: none;
+      border-radius: var(--radius-lg);
+      color: #042a27;
+      font-family: 'Baloo 2', 'Nunito', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 0 #1a6b63, 0 6px 20px rgba(0,0,0,0.3);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+
+    .practice-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 0 #1a6b63, 0 8px 25px rgba(0,0,0,0.35);
+    }
+
+    .practice-cta:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #1a6b63, 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .practice-cta::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      animation: cta-shine 3s ease-in-out infinite;
+    }
+
+    @keyframes cta-shine {
+      0% { left: -100%; }
+      50% { left: 150%; }
+      100% { left: 150%; }
+    }
+
+    .practice-cta-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* ═══════════════════════════════════════════
+       COURSE CARDS
+       ═══════════════════════════════════════════ */
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .course-card {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px;
+      background: var(--gradient-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      overflow: hidden;
+    }
+
+    .course-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-glow);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .course-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-elevated);
+      border-color: var(--border-hover);
+    }
+
+    .course-card:hover::before {
+      opacity: 1;
+    }
+
+    .course-icon {
+      flex-shrink: 0;
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: white;
+      position: relative;
+      z-index: 1;
+    }
+
+    .course-icon.variant-1 { background: var(--gradient-teal); box-shadow: 0 4px 12px rgba(64, 224, 208, 0.3); }
+    .course-icon.variant-2 { background: var(--gradient-purple); box-shadow: 0 4px 12px rgba(147, 112, 219, 0.3); }
+    .course-icon.variant-3 { background: var(--gradient-green); box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3); }
+    .course-icon.variant-4 { background: var(--gradient-coral); box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3); }
+
+    .course-body {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .course-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .course-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: var(--text-tertiary);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .course-meta-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--text-tertiary);
+    }
+
+    /* Progress bar */
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+      position: relative;
+      transition: width 1s ease;
+    }
+
+    .progress-fill.teal { background: var(--gradient-hero); }
+    .progress-fill.purple { background: var(--gradient-purple); }
+    .progress-fill.green { background: var(--gradient-green); }
+    .progress-fill.coral { background: var(--gradient-coral); }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 20px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius-full);
+      filter: blur(3px);
+    }
+
+    .course-progress-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .progress-text {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-tertiary);
+    }
+
+    .progress-percent {
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .progress-percent.teal { color: var(--teal); }
+    .progress-percent.purple { color: var(--purple-bright); }
+    .progress-percent.green { color: var(--green); }
+    .progress-percent.coral { color: var(--coral); }
+
+    .course-arrow {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      font-size: 1.1rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .course-card:hover .course-arrow {
+      color: var(--teal);
+      transform: translateY(-50%) translateX(3px);
+    }
+
+    /* ═══════════════════════════════════════════
+       ADD COURSE BUTTON
+       ═══════════════════════════════════════════ */
+    .add-course-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px;
+      margin-top: 2px;
+      background: transparent;
+      border: 2px dashed rgba(64, 224, 208, 0.15);
+      border-radius: var(--radius-lg);
+      color: var(--teal);
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .add-course-btn:hover {
+      background: var(--teal-subtle);
+      border-color: rgba(64, 224, 208, 0.3);
+    }
+
+    /* ═══════════════════════════════════════════
+       DAILY TIP CARD
+       ═══════════════════════════════════════════ */
+    .tip-card {
+      position: relative;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(147, 112, 219, 0.1) 0%, rgba(64, 224, 208, 0.06) 100%);
+      border: 1px solid rgba(147, 112, 219, 0.12);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .tip-card::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(147, 112, 219, 0.15), transparent 70%);
+    }
+
+    .tip-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .tip-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--purple-bright);
+      background: rgba(147, 112, 219, 0.15);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .tip-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tip-text strong {
+      color: var(--teal-bright);
+      font-weight: 800;
+    }
+
+    /* ═══════════════════════════════════════════
+       BOTTOM NAVIGATION
+       ═══════════════════════════════════════════ */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      z-index: 100;
+      background: rgba(6, 14, 26, 0.92);
+      backdrop-filter: blur(24px) saturate(1.5);
+      -webkit-backdrop-filter: blur(24px) saturate(1.5);
+      border-top: 1px solid var(--border-subtle);
+      padding: 8px 16px;
+      padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .bottom-nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      height: 56px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-decoration: none;
+      color: var(--text-tertiary);
+      transition: color 0.2s ease;
+      position: relative;
+      padding: 4px 16px;
+    }
+
+    .nav-item:hover {
+      color: var(--text-secondary);
+    }
+
+    .nav-item.active {
+      color: var(--teal);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 48px;
+      height: 32px;
+      background: var(--teal-glow);
+      border-radius: var(--radius-sm);
+      z-index: -1;
+    }
+
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .nav-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ═══════════════════════════════════════════
+       STAGGER ANIMATIONS
+       ═══════════════════════════════════════════ */
+    .animate-in {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: slide-fade-in 0.5s ease forwards;
+    }
+
+    @keyframes slide-fade-in {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .delay-1 { animation-delay: 0.05s; }
+    .delay-2 { animation-delay: 0.1s; }
+    .delay-3 { animation-delay: 0.15s; }
+    .delay-4 { animation-delay: 0.2s; }
+    .delay-5 { animation-delay: 0.25s; }
+    .delay-6 { animation-delay: 0.3s; }
+    .delay-7 { animation-delay: 0.35s; }
+    .delay-8 { animation-delay: 0.4s; }
+
+    /* ═══════════════════════════════════════════
+       SCROLLBAR
+       ═══════════════════════════════════════════ */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(64, 224, 208, 0.15);
+      border-radius: var(--radius-full);
+    }
+
+    /* ═══════════════════════════════════════════
+       OUTER PAGE LABEL (desktop only)
+       ═══════════════════════════════════════════ */
+    .design-label {
+      display: none;
+    }
+
+    @media (min-width: 500px) {
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 16px 100px;
+      }
+
+      .design-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .design-label-title {
+        font-family: 'Baloo 2', 'Nunito', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        background: var(--gradient-hero);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .design-label-sub {
+        font-size: 0.7rem;
+        color: var(--text-tertiary);
+        font-weight: 600;
+      }
+
+      .phone-frame {
+        border: 1px solid var(--border-card);
+        border-radius: 40px;
+        overflow: hidden;
+        box-shadow:
+          0 0 0 6px var(--bg-deep),
+          0 0 0 7px var(--border-card),
+          0 25px 80px rgba(0, 0, 0, 0.5),
+          0 0 120px rgba(64, 224, 208, 0.05);
+        min-height: auto;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+
+      .bottom-nav {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        transform: none;
+        max-width: none;
+        border-radius: 0 0 40px 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating particles for underwater feel -->
+  <div class="particles" aria-hidden="true">
+    <div class="particle" style="left: 8%; width: 3px; height: 3px; background: rgba(64,224,208,0.3); animation-duration: 18s; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 22%; width: 2px; height: 2px; background: rgba(147,112,219,0.25); animation-duration: 22s; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 45%; width: 4px; height: 4px; background: rgba(64,224,208,0.2); animation-duration: 16s; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 68%; width: 2px; height: 2px; background: rgba(74,222,128,0.2); animation-duration: 20s; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 85%; width: 3px; height: 3px; background: rgba(147,112,219,0.2); animation-duration: 24s; animation-delay: 8s;"></div>
+    <div class="particle" style="left: 35%; width: 2px; height: 2px; background: rgba(64,224,208,0.15); animation-duration: 26s; animation-delay: 12s;"></div>
+    <div class="particle" style="left: 55%; width: 3px; height: 3px; background: rgba(251,191,36,0.15); animation-duration: 19s; animation-delay: 5s;"></div>
+    <div class="particle" style="left: 92%; width: 2px; height: 2px; background: rgba(64,224,208,0.2); animation-duration: 21s; animation-delay: 9s;"></div>
+  </div>
+
+  <!-- Desktop design label -->
+  <div class="design-label">
+    <div class="design-label-title">Duo Latingo — Dark Ocean</div>
+    <div class="design-label-sub">Design Concept &bull; Dashboard View</div>
+  </div>
+
+  <!-- Phone frame -->
+  <div class="phone-frame">
+
+    <!-- ═══ Navbar ═══ -->
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <!-- Ocean-themed mascot -->
+        <svg class="navbar-logo" width="36" height="36" viewBox="0 0 100 100" fill="none">
+          <ellipse cx="50" cy="55" rx="30" ry="32" fill="url(#mascotGrad)"/>
+          <ellipse cx="50" cy="60" rx="20" ry="22" fill="rgba(255,255,255,0.88)"/>
+          <ellipse cx="25" cy="38" rx="6" ry="10" fill="#2BC4B4" transform="rotate(-15 25 38)"/>
+          <ellipse cx="75" cy="38" rx="6" ry="10" fill="#2BC4B4" transform="rotate(15 75 38)"/>
+          <!-- Laurel -->
+          <path d="M 22 30 Q 18 22 25 18 Q 30 22 28 28" fill="#FBBF24"/>
+          <path d="M 25 24 Q 20 16 28 14 Q 32 18 29 23" fill="#FBBF24"/>
+          <path d="M 78 30 Q 82 22 75 18 Q 70 22 72 28" fill="#FBBF24"/>
+          <path d="M 75 24 Q 80 16 72 14 Q 68 18 71 23" fill="#FBBF24"/>
+          <circle cx="40" cy="48" r="9" fill="white"/>
+          <circle cx="60" cy="48" r="9" fill="white"/>
+          <circle cx="40" cy="48" r="4" fill="#1a2d55"/>
+          <circle cx="60" cy="48" r="4" fill="#1a2d55"/>
+          <circle cx="43" cy="46" r="1.5" fill="white"/>
+          <circle cx="63" cy="46" r="1.5" fill="white"/>
+          <path d="M 45 56 L 50 62 L 55 56" fill="#FBBF24"/>
+          <path d="M 38 68 Q 50 78 62 68" stroke="#1a2d55" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <circle cx="30" cy="58" r="4" fill="#40E0D0" opacity="0.2"/>
+          <circle cx="70" cy="58" r="4" fill="#9370DB" opacity="0.2"/>
+          <ellipse cx="40" cy="86" rx="8" ry="4" fill="#FBBF24"/>
+          <ellipse cx="60" cy="86" rx="8" ry="4" fill="#FBBF24"/>
+          <defs>
+            <linearGradient id="mascotGrad" x1="20" y1="23" x2="80" y2="87" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#40E0D0"/>
+              <stop offset="100%" stop-color="#2BC4B4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="navbar-title">Duo Latingo</span>
+      </div>
+      <div class="navbar-actions">
+        <div class="navbar-streak">
+          <span>🔥</span>
+          <span>12</span>
+        </div>
+        <div class="navbar-avatar">L</div>
+      </div>
+    </nav>
+
+    <!-- ═══ Hero Header ═══ -->
+    <div class="hero animate-in delay-1">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Hoi, <span>Lennert</span>!</h1>
+          <p>Klaar om te leren? 🌊</p>
+        </div>
+        <svg class="hero-mascot" width="90" height="90" viewBox="0 0 100 100" fill="none">
+          <ellipse cx="50" cy="55" rx="30" ry="32" fill="url(#heroMascotGrad)"/>
+          <ellipse cx="50" cy="60" rx="20" ry="22" fill="rgba(255,255,255,0.88)"/>
+          <ellipse cx="25" cy="38" rx="6" ry="10" fill="#2BC4B4" transform="rotate(-15 25 38)"/>
+          <ellipse cx="75" cy="38" rx="6" ry="10" fill="#2BC4B4" transform="rotate(15 75 38)"/>
+          <path d="M 22 30 Q 18 22 25 18 Q 30 22 28 28" fill="#FBBF24"/>
+          <path d="M 25 24 Q 20 16 28 14 Q 32 18 29 23" fill="#FBBF24"/>
+          <path d="M 30 20 Q 26 12 34 10 Q 37 14 33 19" fill="#FBBF24"/>
+          <path d="M 78 30 Q 82 22 75 18 Q 70 22 72 28" fill="#FBBF24"/>
+          <path d="M 75 24 Q 80 16 72 14 Q 68 18 71 23" fill="#FBBF24"/>
+          <path d="M 70 20 Q 74 12 66 10 Q 63 14 67 19" fill="#FBBF24"/>
+          <circle cx="40" cy="48" r="9" fill="white"/>
+          <circle cx="60" cy="48" r="9" fill="white"/>
+          <text x="40" y="52" text-anchor="middle" font-size="12" fill="#FBBF24">★</text>
+          <text x="60" y="52" text-anchor="middle" font-size="12" fill="#FBBF24">★</text>
+          <path d="M 45 56 L 50 62 L 55 56" fill="#FBBF24"/>
+          <path d="M 36 65 Q 50 82 64 65" stroke="#1a2d55" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <circle cx="30" cy="58" r="4" fill="#40E0D0" opacity="0.2"/>
+          <circle cx="70" cy="58" r="4" fill="#9370DB" opacity="0.2"/>
+          <ellipse cx="40" cy="86" rx="8" ry="4" fill="#FBBF24"/>
+          <ellipse cx="60" cy="86" rx="8" ry="4" fill="#FBBF24"/>
+          <defs>
+            <linearGradient id="heroMascotGrad" x1="20" y1="23" x2="80" y2="87" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#40E0D0"/>
+              <stop offset="100%" stop-color="#9370DB"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ═══ Content ═══ -->
+    <div class="content">
+
+      <!-- Streak -->
+      <div class="streak-card animate-in delay-2">
+        <div class="streak-icon">
+          <div class="streak-flame-glow"></div>
+          🔥
+        </div>
+        <div class="streak-info">
+          <div class="streak-count">
+            <span class="streak-number">12</span>
+            <span class="streak-label">dagen</span>
+          </div>
+          <div class="streak-sub">Langste streak: 24 dagen</div>
+        </div>
+        <div class="streak-days">
+          <div class="streak-day active">M</div>
+          <div class="streak-day active">D</div>
+          <div class="streak-day active">W</div>
+          <div class="streak-day active">D</div>
+          <div class="streak-day today">V</div>
+          <div class="streak-day">Z</div>
+          <div class="streak-day">Z</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="section animate-in delay-3">
+        <div class="stats-grid">
+          <div class="stat-card teal">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-value">2,450</div>
+            <div class="stat-label">XP</div>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-icon">📚</div>
+            <div class="stat-value">187</div>
+            <div class="stat-label">Woorden</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value">34</div>
+            <div class="stat-label">Sessies</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice CTA -->
+      <button class="practice-cta animate-in delay-4">
+        <span class="practice-cta-inner">
+          <span>▶</span>
+          <span>Start oefensessie</span>
+        </span>
+      </button>
+
+      <!-- Courses -->
+      <div class="section animate-in delay-5">
+        <div class="section-header">
+          <h2 class="section-title">Mijn cursussen</h2>
+        </div>
+
+        <div class="courses-list">
+          <!-- Course 1 -->
+          <div class="course-card">
+            <div class="course-icon variant-1">🇪🇸</div>
+            <div class="course-body">
+              <div class="course-name">Spaans voor beginners</div>
+              <div class="course-meta">
+                <span>4 hoofdstukken</span>
+                <span class="course-meta-dot"></span>
+                <span>86 woorden</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill teal" style="width: 72%;"></div>
+              </div>
+              <div class="course-progress-label">
+                <span class="progress-text">62 / 86 woorden geleerd</span>
+                <span class="progress-percent teal">72%</span>
+              </div>
+            </div>
+            <span class="course-arrow">›</span>
+          </div>
+
+          <!-- Course 2 -->
+          <div class="course-card">
+            <div class="course-icon variant-2">🇫🇷</div>
+            <div class="course-body">
+              <div class="course-name">Frans — Vakantie</div>
+              <div class="course-meta">
+                <span>3 hoofdstukken</span>
+                <span class="course-meta-dot"></span>
+                <span>54 woorden</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill purple" style="width: 45%;"></div>
+              </div>
+              <div class="course-progress-label">
+                <span class="progress-text">24 / 54 woorden geleerd</span>
+                <span class="progress-percent purple">45%</span>
+              </div>
+            </div>
+            <span class="course-arrow">›</span>
+          </div>
+
+          <!-- Course 3 -->
+          <div class="course-card">
+            <div class="course-icon variant-3">🇩🇪</div>
+            <div class="course-body">
+              <div class="course-name">Duits op het werk</div>
+              <div class="course-meta">
+                <span>5 hoofdstukken</span>
+                <span class="course-meta-dot"></span>
+                <span>120 woorden</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill green" style="width: 18%;"></div>
+              </div>
+              <div class="course-progress-label">
+                <span class="progress-text">22 / 120 woorden geleerd</span>
+                <span class="progress-percent green">18%</span>
+              </div>
+            </div>
+            <span class="course-arrow">›</span>
+          </div>
+
+          <!-- Course 4 -->
+          <div class="course-card">
+            <div class="course-icon variant-4">🇮🇹</div>
+            <div class="course-body">
+              <div class="course-name">Italiaans — Eten & Drinken</div>
+              <div class="course-meta">
+                <span>2 hoofdstukken</span>
+                <span class="course-meta-dot"></span>
+                <span>38 woorden</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill coral" style="width: 92%;"></div>
+              </div>
+              <div class="course-progress-label">
+                <span class="progress-text">35 / 38 woorden geleerd</span>
+                <span class="progress-percent coral" style="color: var(--coral);">92%</span>
+              </div>
+            </div>
+            <span class="course-arrow">›</span>
+          </div>
+        </div>
+
+        <!-- Add course -->
+        <button class="add-course-btn" style="margin-top: 12px;">
+          <span>+</span>
+          <span>Nieuwe cursus</span>
+        </button>
+      </div>
+
+      <!-- Daily tip -->
+      <div class="section animate-in delay-7" style="margin-bottom: 24px;">
+        <div class="tip-card">
+          <div class="tip-header">
+            <span style="font-size: 1.1rem;">💡</span>
+            <span class="tip-badge">Tip van de dag</span>
+          </div>
+          <p class="tip-text">
+            Probeer elke dag <strong>minstens 5 minuten</strong> te oefenen.
+            Korte, regelmatige sessies werken beter dan lange marathons!
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ Bottom Nav ═══ -->
+    <div class="bottom-nav">
+      <div class="bottom-nav-inner">
+        <!-- Home (active) -->
+        <a href="#" class="nav-item active">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span class="nav-label">Home</span>
+        </a>
+        <!-- Courses -->
+        <a href="#" class="nav-item">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          <span class="nav-label">Cursussen</span>
+        </a>
+        <!-- Profile -->
+        <a href="#" class="nav-item">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="nav-label">Profiel</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

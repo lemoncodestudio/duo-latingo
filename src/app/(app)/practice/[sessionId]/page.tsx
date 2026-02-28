@@ -8,6 +8,7 @@ import { PracticeProgressBar } from "@/components/practice/progress-bar";
 import { MultipleChoice } from "@/components/practice/multiple-choice";
 import { TypeAnswer } from "@/components/practice/type-answer";
 import { FeedbackBanner } from "@/components/practice/feedback-banner";
+import { Mascot } from "@/components/shared/mascot";
 
 interface AnswerRecord {
   vocabularyId: string;
@@ -122,9 +123,9 @@ export default function PracticePage({ params }: Props) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="text-4xl animate-bounce">🧠</div>
+          <Mascot expression="thinking" size={80} className="mx-auto animate-pulse-glow" />
           <p className="text-muted-foreground">Sessie laden...</p>
         </div>
       </div>
@@ -133,9 +134,9 @@ export default function PracticePage({ params }: Props) {
 
   if (submitting) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="text-4xl animate-spin">⏳</div>
+          <Mascot expression="excited" size={80} className="mx-auto animate-bounce-in" />
           <p className="text-muted-foreground">Resultaten verwerken...</p>
         </div>
       </div>
@@ -147,7 +148,7 @@ export default function PracticePage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <div className="p-4 max-w-lg mx-auto w-full">
         <PracticeProgressBar
           current={currentIndex + 1}

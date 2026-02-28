@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StartPracticeButton } from "@/components/practice/start-practice-button";
 
@@ -42,64 +41,66 @@ export default async function CourseDetailPage({ params }: Props) {
   const totalWords = chaptersWithCounts.reduce((sum, c) => sum + c.wordCount, 0);
 
   return (
-    <div className="max-w-lg mx-auto p-4 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">{course.name}</h1>
-        {course.description && (
-          <p className="text-muted-foreground mt-1">{course.description}</p>
-        )}
-        <div className="flex items-center gap-2 mt-2">
-          <Badge variant="secondary">
-            {chaptersWithCounts.length} hoofdstukken
-          </Badge>
-          <Badge variant="secondary">{totalWords} woorden</Badge>
+    <div className="max-w-lg mx-auto space-y-6">
+      <div
+        className="rounded-b-3xl p-6 text-white relative overflow-hidden"
+        style={{ background: "linear-gradient(170deg, color-mix(in srgb, var(--color-teal) 15%, transparent) 0%, color-mix(in srgb, var(--color-purple) 8%, transparent) 50%, transparent 100%)" }}
+      >
+        <div className="relative z-10">
+          <h1 className="text-2xl font-extrabold text-foreground">{course.name}</h1>
+          {course.description && (
+            <p className="text-white/60 mt-1">{course.description}</p>
+          )}
+          <div className="flex items-center gap-2 mt-3">
+            <Badge className="bg-white/10 text-white/80 border-white/[0.08] hover:bg-white/15">
+              {chaptersWithCounts.length} hoofdstukken
+            </Badge>
+            <Badge className="bg-white/10 text-white/80 border-white/[0.08] hover:bg-white/15">
+              {totalWords} woorden
+            </Badge>
+          </div>
         </div>
       </div>
 
-      {totalWords >= 4 && (
-        <StartPracticeButton courseId={courseId} />
-      )}
+      <div className="px-4 space-y-6">
+        {totalWords >= 4 && (
+          <StartPracticeButton courseId={courseId} />
+        )}
 
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold">Hoofdstukken</h2>
-          <Link href={`/courses/${courseId}/upload`}>
-            <Button
-              size="sm"
-              className="bg-[#58CC02] hover:bg-[#4CAF00] text-white"
-            >
-              + Woorden toevoegen
-            </Button>
-          </Link>
-        </div>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">Hoofdstukken</h2>
+            <Link href={`/courses/${courseId}/upload`}>
+              <Button variant="duo" size="sm">
+                + Woorden toevoegen
+              </Button>
+            </Link>
+          </div>
 
-        {chaptersWithCounts.length === 0 ? (
-          <Card>
-            <CardContent className="text-center py-8">
-              <div className="text-4xl mb-3">📷</div>
-              <p className="font-medium">Nog geen hoofdstukken</p>
+          {chaptersWithCounts.length === 0 ? (
+            <div className="text-center py-8 bg-card rounded-2xl border border-white/[0.08]">
+              <p className="font-bold text-lg">Nog geen hoofdstukken</p>
               <p className="text-sm text-muted-foreground mt-1">
                 Upload een foto van je werkboek om te beginnen
               </p>
               <Link href={`/courses/${courseId}/upload`}>
-                <Button className="mt-4 bg-[#58CC02] hover:bg-[#4CAF00] text-white">
+                <Button variant="duo" className="mt-4">
                   Woorden toevoegen
                 </Button>
               </Link>
-            </CardContent>
-          </Card>
-        ) : (
-          chaptersWithCounts.map((chapter) => (
-            <Card key={chapter.id}>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base flex items-center justify-between">
-                  <span>{chapter.name}</span>
-                  <Badge variant="outline">{chapter.wordCount} woorden</Badge>
-                </CardTitle>
-              </CardHeader>
-            </Card>
-          ))
-        )}
+            </div>
+          ) : (
+            chaptersWithCounts.map((chapter) => (
+              <div
+                key={chapter.id}
+                className="p-4 bg-[linear-gradient(180deg,_theme(colors.card)_0%,_theme(colors.secondary)_100%)] rounded-2xl border border-white/[0.08] flex items-center justify-between"
+              >
+                <span className="font-bold">{chapter.name}</span>
+                <Badge variant="outline" className="border-white/[0.12] text-muted-foreground">{chapter.wordCount} woorden</Badge>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

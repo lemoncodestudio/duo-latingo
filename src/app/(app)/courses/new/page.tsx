@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Mascot } from "@/components/shared/mascot";
 
 export default function NewCoursePage() {
   const [name, setName] = useState("");
@@ -41,54 +41,56 @@ export default function NewCoursePage() {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Nieuwe cursus</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Naam</Label>
-              <Input
-                id="name"
-                placeholder="bv. Latijn Jaar 1"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                disabled={loading}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="description">Beschrijving (optioneel)</Label>
-              <Input
-                id="description"
-                placeholder="bv. Hoofdstukken 1-10 uit Lingua Latina"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                disabled={loading}
-              />
-            </div>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.back()}
-                disabled={loading}
-              >
-                Annuleren
-              </Button>
-              <Button
-                type="submit"
-                className="bg-[#58CC02] hover:bg-[#4CAF00] text-white flex-1"
-                disabled={loading || !name.trim()}
-              >
-                {loading ? "Aanmaken..." : "Cursus aanmaken"}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+    <div className="max-w-lg mx-auto p-4 space-y-6">
+      <div className="flex flex-col items-center gap-2">
+        <Mascot expression="happy" size={80} />
+        <h1 className="text-2xl font-extrabold text-foreground">Nieuwe cursus</h1>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="space-y-2">
+          <Label htmlFor="name">Naam</Label>
+          <Input
+            id="name"
+            placeholder="bv. Latijn Jaar 1"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            disabled={loading}
+            className="h-12"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="description">Beschrijving (optioneel)</Label>
+          <Input
+            id="description"
+            placeholder="bv. Hoofdstukken 1-10 uit Lingua Latina"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            disabled={loading}
+            className="h-12"
+          />
+        </div>
+        <div className="flex gap-3">
+          <Button
+            type="button"
+            variant="duo-outline"
+            onClick={() => router.back()}
+            disabled={loading}
+          >
+            Annuleren
+          </Button>
+          <Button
+            type="submit"
+            variant="duo"
+            size="duo"
+            className="flex-1"
+            disabled={loading || !name.trim()}
+          >
+            {loading ? "Aanmaken..." : "Cursus aanmaken"}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }

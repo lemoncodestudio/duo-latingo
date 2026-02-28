@@ -13,12 +13,16 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-white/[0.08] bg-secondary shadow-xs hover:bg-card hover:text-accent-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+          "hover:bg-white/[0.05] hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        duo: "bg-gradient-to-r from-teal to-teal-dark border-2 border-teal-btn border-b-4 text-teal-fg font-extrabold uppercase tracking-wide hover:brightness-110 active:border-b-2 active:translate-y-[2px] active:mb-[2px]",
+        "duo-red": "bg-gradient-to-r from-rose to-rose-dark border-2 border-rose-btn border-b-4 text-white font-extrabold uppercase tracking-wide hover:brightness-110 active:border-b-2 active:translate-y-[2px] active:mb-[2px]",
+        "duo-blue": "bg-gradient-to-r from-ocean to-ocean-dark border-2 border-ocean-btn border-b-4 text-white font-extrabold uppercase tracking-wide hover:brightness-110 active:border-b-2 active:translate-y-[2px] active:mb-[2px]",
+        "duo-outline": "bg-secondary border-2 border-teal/15 border-b-4 text-foreground font-bold hover:bg-card hover:border-teal/25 active:border-b-2 active:translate-y-[2px] active:mb-[2px]",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
@@ -29,6 +33,7 @@ const buttonVariants = cva(
         "icon-xs": "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3",
         "icon-sm": "size-8",
         "icon-lg": "size-10",
+        duo: "h-14 px-8 rounded-2xl text-base [&_svg:not([class*='size-'])]:size-5",
       },
     },
     defaultVariants: {

@@ -6,9 +6,9 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PhotoUploadZone } from "@/components/upload/photo-upload-zone";
 import { ExtractedWordsReview } from "@/components/upload/extracted-words-review";
+import { StepIndicator } from "@/components/shared/step-indicator";
 
 interface ExtractedWord {
   latin: string;
@@ -32,6 +32,8 @@ export default function UploadPage({ params }: Props) {
   const [words, setWords] = useState<ExtractedWord[] | null>(null);
   const [saving, setSaving] = useState(false);
   const router = useRouter();
+
+  const currentStep = words !== null ? 2 : file ? 1 : 0;
 
   const handleFileSelect = (selectedFile: File) => {
     setFile(selectedFile);
@@ -144,82 +146,79 @@ export default function UploadPage({ params }: Props) {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4 space-y-6">
-      <h1 className="text-2xl font-bold">Woorden toevoegen</h1>
+    <div className="max-w-lg mx-auto p-4 space-y-8">
+      <h1 className="text-2xl font-extrabold text-foreground">Woorden toevoegen</h1>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Stap 1: Hoofdstuk naam</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <Label htmlFor="chapter">Naam</Label>
-            <Input
-              id="chapter"
-              placeholder="bv. Hoofdstuk 3 - De Romeinse familie"
-              value={chapterName}
-              onChange={(e) => setChapterName(e.target.value)}
-            />
-          </div>
-        </CardContent>
-      </Card>
+      <StepIndicator
+        steps={["Hoofdstuk", "Upload", "Controleer"]}
+        currentStep={currentStep}
+      />
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">
-            Stap 2: Upload een foto of voer handmatig in
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <PhotoUploadZone
-            onFileSelect={handleFileSelect}
-            preview={preview}
+      <div className="space-y-3">
+        <h2 className="text-lg font-bold">Stap 1: Hoofdstuk naam</h2>
+        <div className="space-y-2">
+          <Label htmlFor="chapter">Naam</Label>
+          <Input
+            id="chapter"
+            placeholder="bv. Hoofdstuk 3 - De Romeinse familie"
+            value={chapterName}
+            onChange={(e) => setChapterName(e.target.value)}
+            className="h-12"
           />
-          {file && !words && (
-            <Button
-              onClick={handleExtract}
-              disabled={extracting}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              {extracting
-                ? "Woorden extraheren..."
-                : "🤖 Woorden extraheren met AI"}
-            </Button>
-          )}
-          {!file && !words && (
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => setWords([])}
-            >
-              Of voer handmatig woorden in
-            </Button>
-          )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold">
+          Stap 2: Upload een foto of voer handmatig in
+        </h2>
+        <PhotoUploadZone
+          onFileSelect={handleFileSelect}
+          preview={preview}
+        />
+        {file && !words && (
+          <Button
+            variant="duo-blue"
+            size="duo"
+            onClick={handleExtract}
+            disabled={extracting}
+            className="w-full"
+          >
+            {extracting
+              ? "Woorden extraheren..."
+              : "Woorden extraheren met AI"}
+          </Button>
+        )}
+        {!file && !words && (
+          <Button
+            variant="duo-outline"
+            className="w-full"
+            onClick={() => setWords([])}
+          >
+            Of voer handmatig woorden in
+          </Button>
+        )}
+      </div>
 
       {words !== null && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">
-              Stap 3: Controleer en bewerk
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ExtractedWordsReview
-              words={words}
-              onChange={setWords}
-            />
-          </CardContent>
-        </Card>
+        <div className="space-y-4">
+          <h2 className="text-lg font-bold">
+            Stap 3: Controleer en bewerk
+          </h2>
+          <ExtractedWordsReview
+            words={words}
+            onChange={setWords}
+          />
+        </div>
       )}
 
       {words !== null && (
         <Button
+          variant="duo"
+          size="duo"
           onClick={handleSave}
           disabled={saving || words.length === 0 || !chapterName.trim()}
-          size="lg"
-          className="w-full bg-[#58CC02] hover:bg-[#4CAF00] text-white font-bold h-14 rounded-xl"
+          className="w-full"
         >
           {saving
             ? "Opslaan..."

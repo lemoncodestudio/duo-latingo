@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Mascot } from "@/components/shared/mascot";
 import { cn } from "@/lib/utils";
 
 interface FeedbackBannerProps {
@@ -17,39 +18,45 @@ export function FeedbackBanner({
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 right-0 p-4 border-t-2 animate-in slide-in-from-bottom duration-200",
+        "fixed bottom-0 left-0 right-0 p-4 border-t animate-in slide-in-from-bottom duration-200 backdrop-blur-xl",
         isCorrect
-          ? "bg-green-50 border-[#58CC02]"
-          : "bg-red-50 border-[#FF4B4B]"
+          ? "bg-teal/10 border-teal/20"
+          : "bg-rose/10 border-rose/20"
       )}
     >
       <div className="max-w-lg mx-auto space-y-3">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">{isCorrect ? "✅" : "❌"}</span>
-          <div>
+        <div className="flex items-center gap-3">
+          <Mascot
+            expression={isCorrect ? "celebrating" : "sad"}
+            size={56}
+            className="shrink-0"
+          />
+          <div className="flex-1">
             <p
               className={cn(
-                "font-bold",
-                isCorrect ? "text-[#58CC02]" : "text-[#FF4B4B]"
+                "font-extrabold text-lg",
+                isCorrect ? "text-teal" : "text-rose"
               )}
             >
               {isCorrect ? "Goed zo!" : "Helaas, fout"}
             </p>
             {!isCorrect && (
               <p className="text-sm text-muted-foreground">
-                Correct antwoord: <strong>{correctAnswer}</strong>
+                Correct antwoord: <strong className="text-foreground">{correctAnswer}</strong>
               </p>
             )}
           </div>
+          {isCorrect && (
+            <span className="text-teal font-extrabold text-sm animate-float-up">
+              +10 XP
+            </span>
+          )}
         </div>
         <Button
           onClick={onContinue}
-          className={cn(
-            "w-full font-bold h-12 rounded-xl text-white",
-            isCorrect
-              ? "bg-[#58CC02] hover:bg-[#4CAF00]"
-              : "bg-[#FF4B4B] hover:bg-[#E04343]"
-          )}
+          variant={isCorrect ? "duo" : "duo-red"}
+          size="duo"
+          className="w-full"
         >
           Doorgaan
         </Button>

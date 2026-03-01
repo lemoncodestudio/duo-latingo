@@ -51,25 +51,25 @@ export default async function ProfilePage() {
       />
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-2xl p-4 border border-teal/12 bg-[linear-gradient(160deg,_theme(colors.teal/0.15)_0%,_theme(colors.teal/0.04)_100%)]">
+        <div className="rounded-2xl p-4 border border-teal/12 bg-[linear-gradient(160deg,rgba(64,224,208,0.15)_0%,rgba(64,224,208,0.04)_100%)]">
           <p className="text-sm text-muted-foreground font-medium">Totaal XP</p>
           <p className="text-3xl font-extrabold text-teal mt-1">
             {profile?.xp || 0}
           </p>
         </div>
-        <div className="rounded-2xl p-4 border border-purple/12 bg-[linear-gradient(160deg,_theme(colors.purple/0.15)_0%,_theme(colors.purple/0.04)_100%)]">
+        <div className="rounded-2xl p-4 border border-purple/12 bg-[linear-gradient(160deg,rgba(147,112,219,0.15)_0%,rgba(147,112,219,0.04)_100%)]">
           <p className="text-sm text-muted-foreground font-medium">Sessies</p>
           <p className="text-3xl font-extrabold text-purple-light mt-1">
             {totalSessions || 0}
           </p>
         </div>
-        <div className="rounded-2xl p-4 border border-ocean/12 bg-[linear-gradient(160deg,_theme(colors.ocean/0.15)_0%,_theme(colors.ocean/0.04)_100%)]">
+        <div className="rounded-2xl p-4 border border-ocean/12 bg-[linear-gradient(160deg,rgba(56,189,248,0.15)_0%,rgba(56,189,248,0.04)_100%)]">
           <p className="text-sm text-muted-foreground font-medium">Woorden geleerd</p>
           <p className="text-3xl font-extrabold text-ocean mt-1">
             {totalWords || 0}
           </p>
         </div>
-        <div className="rounded-2xl p-4 border border-amber/12 bg-[linear-gradient(160deg,_theme(colors.amber/0.15)_0%,_theme(colors.amber/0.04)_100%)]">
+        <div className="rounded-2xl p-4 border border-amber/12 bg-[linear-gradient(160deg,rgba(251,191,36,0.15)_0%,rgba(251,191,36,0.04)_100%)]">
           <p className="text-sm text-muted-foreground font-medium">Langste streak</p>
           <p className="text-3xl font-extrabold text-amber mt-1">
             {profile?.longest_streak || 0}

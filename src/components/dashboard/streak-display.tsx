@@ -14,13 +14,13 @@ export function StreakDisplay({ streak, longestStreak }: StreakDisplayProps) {
   const todayIndex = today === 0 ? 6 : today - 1;
 
   return (
-    <div className="relative flex items-center gap-4 p-5 rounded-xl overflow-hidden border border-amber/15 bg-[linear-gradient(135deg,_theme(colors.amber/0.12)_0%,_theme(colors.amber-dark/0.06)_100%)]">
+    <div className="relative flex items-center gap-4 p-5 rounded-xl overflow-hidden border border-amber/15 bg-[linear-gradient(135deg,rgba(251,191,36,0.12)_0%,rgba(245,158,11,0.06)_100%)]">
       {/* Ambient glow */}
-      <div className="absolute top-0 right-0 w-[120px] h-full bg-[radial-gradient(circle_at_100%_50%,_theme(colors.amber/0.1),transparent_70%)]" />
+      <div className="absolute top-0 right-0 w-[120px] h-full bg-[radial-gradient(circle_at_100%_50%,rgba(251,191,36,0.1),transparent_70%)]" />
 
       {/* Flame icon with glow */}
       <div className="relative w-[52px] h-[52px] flex items-center justify-center text-3xl shrink-0 animate-flame">
-        <div className="absolute inset-[-8px] rounded-full bg-[radial-gradient(circle,_theme(colors.amber/0.3),transparent_70%)] animate-glow-pulse" />
+        <div className="absolute inset-[-8px] rounded-full bg-[radial-gradient(circle,rgba(251,191,36,0.3),transparent_70%)] animate-glow-pulse" />
         <span className="relative">🔥</span>
       </div>
 
@@ -42,7 +42,8 @@ export function StreakDisplay({ streak, longestStreak }: StreakDisplayProps) {
       {/* Week day indicators */}
       <div className="flex gap-1.5 ml-auto relative z-10">
         {weekDays.map((day, i) => {
-          const isActive = i < todayIndex;
+          const streakStart = Math.max(0, todayIndex - streak);
+          const isActive = i >= streakStart && i < todayIndex;
           const isToday = i === todayIndex;
           return (
             <div
@@ -50,7 +51,7 @@ export function StreakDisplay({ streak, longestStreak }: StreakDisplayProps) {
               className={cn(
                 "w-7 h-7 rounded-full flex items-center justify-center text-[0.65rem] font-extrabold border-2",
                 isActive &&
-                  "bg-[linear-gradient(135deg,_theme(colors.amber),_theme(colors.amber-dark))] border-transparent text-amber-fg shadow-[0_0_8px_theme(colors.amber/0.3)]",
+                  "bg-[linear-gradient(135deg,#FBBF24,#F59E0B)] border-transparent text-amber-fg shadow-[0_0_8px_rgba(251,191,36,0.3)]",
                 isToday &&
                   "border-amber text-amber animate-today-pulse",
                 !isActive &&

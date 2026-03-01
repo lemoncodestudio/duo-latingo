@@ -94,7 +94,7 @@ export default async function DashboardPage() {
             "linear-gradient(170deg, color-mix(in srgb, var(--color-teal) 12%, transparent) 0%, color-mix(in srgb, var(--color-purple) 8%, transparent) 50%, transparent 100%)",
         }}
       >
-        <div className="absolute top-[-50%] right-[-30%] w-[300px] h-[300px] bg-[radial-gradient(circle,_theme(colors.teal/0.1)_0%,transparent_70%)] animate-hero-pulse" />
+        <div className="absolute top-[-50%] right-[-30%] w-[300px] h-[300px] bg-[radial-gradient(circle,rgba(64,224,208,0.1)_0%,transparent_70%)] animate-hero-pulse" />
         <div className="relative flex items-center justify-between">
           <div>
             <h1 className="text-[1.75rem] font-extrabold leading-tight text-foreground">
@@ -116,7 +116,7 @@ export default async function DashboardPage() {
           <Mascot
             expression="excited"
             size={90}
-            className="relative z-10 drop-shadow-[0_0_20px_theme(colors.teal/0.25)] animate-mascot-bob"
+            className="relative z-10 drop-shadow-[0_0_20px_rgba(64,224,208,0.25)] animate-mascot-bob"
           />
         </div>
       </div>
@@ -146,7 +146,7 @@ export default async function DashboardPage() {
             href={`/courses/${courseStats[0].course.id}`}
             className="block mt-5 animate-in delay-4"
           >
-            <button className="relative w-full py-[18px] px-6 bg-[image:var(--gradient-hero)] border-none rounded-xl text-teal-fg font-extrabold text-lg tracking-tight cursor-pointer overflow-hidden shadow-[0_4px_0_theme(colors.teal-btn),0_6px_20px_rgba(0,0,0,0.3)] transition-all hover:translate-y-[-1px] hover:shadow-[0_5px_0_theme(colors.teal-btn),0_8px_25px_rgba(0,0,0,0.35)] active:translate-y-[3px] active:shadow-[0_1px_0_theme(colors.teal-btn),0_2px_8px_rgba(0,0,0,0.2)]">
+            <button className="relative w-full py-[18px] px-6 bg-[image:var(--gradient-hero)] border-none rounded-xl text-teal-fg font-extrabold text-lg tracking-tight cursor-pointer overflow-hidden shadow-[0_4px_0_#1a6b63,0_6px_20px_rgba(0,0,0,0.3)] transition-all hover:translate-y-[-1px] hover:shadow-[0_5px_0_#1a6b63,0_8px_25px_rgba(0,0,0,0.35)] active:translate-y-[3px] active:shadow-[0_1px_0_#1a6b63,0_2px_8px_rgba(0,0,0,0.2)]">
               <span className="flex items-center justify-center gap-2.5">
                 <span>▶</span>
                 <span>Start oefensessie</span>
@@ -170,7 +170,7 @@ export default async function DashboardPage() {
                 Maak je eerste cursus aan om te beginnen!
               </p>
               <Link href="/courses/new">
-                <button className="mt-4 px-6 py-3 bg-[linear-gradient(135deg,_theme(colors.teal),_theme(colors.teal-dark))] rounded-xl text-teal-fg font-extrabold shadow-[0_4px_0_theme(colors.teal-btn)] active:translate-y-[2px] active:shadow-[0_1px_0_theme(colors.teal-btn)]">
+                <button className="mt-4 px-6 py-3 bg-[linear-gradient(135deg,#40E0D0,#2BC4B4)] rounded-xl text-teal-fg font-extrabold shadow-[0_4px_0_#1a6b63] active:translate-y-[2px] active:shadow-[0_1px_0_#1a6b63]">
                   Cursus aanmaken
                 </button>
               </Link>

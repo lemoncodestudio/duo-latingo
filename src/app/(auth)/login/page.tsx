@@ -39,8 +39,8 @@ export default function LoginPage() {
       className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden"
       style={{ background: "linear-gradient(170deg, var(--color-surface) 0%, var(--background) 40%, color-mix(in srgb, var(--color-teal) 5%, transparent) 100%)" }}
     >
-      <div className="absolute top-[10%] left-[10%] w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,_theme(colors.teal/0.06)_0%,transparent_70%)]" />
-      <div className="absolute bottom-[20%] right-[10%] w-[250px] h-[250px] rounded-full bg-[radial-gradient(circle,_theme(colors.purple/0.05)_0%,transparent_70%)]" />
+      <div className="absolute top-[10%] left-[10%] w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(64,224,208,0.06)_0%,transparent_70%)]" />
+      <div className="absolute bottom-[20%] right-[10%] w-[250px] h-[250px] rounded-full bg-[radial-gradient(circle,rgba(147,112,219,0.05)_0%,transparent_70%)]" />
 
       <div className="mb-6 relative z-10">
         <Mascot

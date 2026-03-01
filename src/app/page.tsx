@@ -11,7 +11,7 @@ export default function LandingPage() {
         className="w-full py-16 px-4 text-center text-white relative overflow-hidden"
         style={{ background: "linear-gradient(170deg, color-mix(in srgb, var(--color-teal) 15%, transparent) 0%, color-mix(in srgb, var(--color-purple) 10%, transparent) 50%, var(--background) 100%)" }}
       >
-        <div className="absolute top-[-30%] right-[-20%] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,_theme(colors.teal/0.08)_0%,transparent_70%)]" />
+        <div className="absolute top-[-30%] right-[-20%] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(64,224,208,0.08)_0%,transparent_70%)]" />
         <div className="max-w-lg mx-auto space-y-6 relative z-10">
           <Mascot expression="excited" size={150} className="mx-auto animate-bounce-in" />
           <h1

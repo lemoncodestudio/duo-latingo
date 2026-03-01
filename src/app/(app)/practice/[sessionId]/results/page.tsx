@@ -2,7 +2,6 @@
 
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/shared/mascot";
 import { CheckCircle, Zap, Flame } from "lucide-react";
@@ -58,12 +57,16 @@ export default function ResultsPage({ params }: Props) {
         });
       }
 
-      sessionStorage.removeItem(`practice-${sessionId}`);
-      sessionStorage.removeItem(`results-${sessionId}`);
     } else {
       router.push("/dashboard");
     }
   }, [sessionId, router]);
+
+  const handleBack = () => {
+    sessionStorage.removeItem(`practice-${sessionId}`);
+    sessionStorage.removeItem(`results-${sessionId}`);
+    router.push("/dashboard");
+  };
 
   if (!results) {
     return (
@@ -113,21 +116,21 @@ export default function ResultsPage({ params }: Props) {
         </div>
 
         <div className="grid grid-cols-3 gap-4 animate-scale-pop">
-          <div className="rounded-2xl p-4 border border-teal/12 bg-[linear-gradient(160deg,_theme(colors.teal/0.15)_0%,_theme(colors.teal/0.04)_100%)]">
+          <div className="rounded-2xl p-4 border border-teal/12 bg-[linear-gradient(160deg,rgba(64,224,208,0.15)_0%,rgba(64,224,208,0.04)_100%)]">
             <CheckCircle className="w-5 h-5 text-teal mx-auto mb-1" />
             <div className="text-2xl font-bold text-teal">
               {results.correctCount}/{results.totalQuestions}
             </div>
             <div className="text-xs text-dim mt-1 font-bold uppercase">Correct</div>
           </div>
-          <div className="rounded-2xl p-4 border border-ocean/12 bg-[linear-gradient(160deg,_theme(colors.ocean/0.15)_0%,_theme(colors.ocean/0.04)_100%)]">
+          <div className="rounded-2xl p-4 border border-ocean/12 bg-[linear-gradient(160deg,rgba(56,189,248,0.15)_0%,rgba(56,189,248,0.04)_100%)]">
             <Zap className="w-5 h-5 text-ocean mx-auto mb-1" />
             <div className="text-2xl font-bold text-ocean">
               +{results.xpEarned}
             </div>
             <div className="text-xs text-dim mt-1 font-bold uppercase">XP</div>
           </div>
-          <div className="rounded-2xl p-4 border border-amber/12 bg-[linear-gradient(160deg,_theme(colors.amber/0.15)_0%,_theme(colors.amber/0.04)_100%)]">
+          <div className="rounded-2xl p-4 border border-amber/12 bg-[linear-gradient(160deg,rgba(251,191,36,0.15)_0%,rgba(251,191,36,0.04)_100%)]">
             <Flame className="w-5 h-5 text-amber mx-auto mb-1" />
             <div className="text-2xl font-bold text-amber">
               {results.streak}
@@ -167,11 +170,9 @@ export default function ResultsPage({ params }: Props) {
         </div>
 
         <div className="space-y-3">
-          <Link href="/dashboard">
-            <Button variant="duo" size="duo" className="w-full">
-              Terug naar dashboard
-            </Button>
-          </Link>
+          <Button variant="duo" size="duo" className="w-full" onClick={handleBack}>
+            Terug naar dashboard
+          </Button>
         </div>
       </div>
     </div>

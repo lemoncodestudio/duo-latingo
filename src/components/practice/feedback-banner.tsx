@@ -20,8 +20,8 @@ export function FeedbackBanner({
       className={cn(
         "fixed bottom-0 left-0 right-0 p-4 border-t animate-in slide-in-from-bottom duration-200 backdrop-blur-xl",
         isCorrect
-          ? "bg-teal/10 border-teal/20"
-          : "bg-rose/10 border-rose/20"
+          ? "bg-teal-glow border-teal-glow"
+          : "bg-rose-glow border-rose-glow"
       )}
     >
       <div className="max-w-lg mx-auto space-y-3">
@@ -54,7 +54,6 @@ export function FeedbackBanner({
         </div>
         <Button
           onClick={onContinue}
-          variant={isCorrect ? "duo" : "duo-red"}
           size="duo"
           className="w-full"
         >

@@ -8,7 +8,7 @@ export function StatsCards({ xp, wordsLearned, sessionsCompleted }: StatsCardsPr
   return (
     <div className="grid grid-cols-3 gap-2.5">
       {/* XP */}
-      <div className="rounded-xl p-4 text-center border border-teal/12 bg-[linear-gradient(160deg,_theme(colors.teal/0.15)_0%,_theme(colors.teal/0.04)_100%)] transition-all hover:translate-y-[-2px] hover:shadow-[0_0_30px_theme(colors.teal/0.15),0_0_60px_theme(colors.teal/0.05)]">
+      <div className="rounded-xl p-4 text-center border border-teal/12 bg-[linear-gradient(160deg,rgba(64,224,208,0.15)_0%,rgba(64,224,208,0.04)_100%)] transition-all hover:translate-y-[-2px] hover:shadow-[0_0_30px_rgba(64,224,208,0.15),0_0_60px_rgba(64,224,208,0.05)]">
         <div className="text-xl mb-1.5">⚡</div>
         <div className="text-2xl font-extrabold text-teal leading-none">
           {xp.toLocaleString()}
@@ -19,7 +19,7 @@ export function StatsCards({ xp, wordsLearned, sessionsCompleted }: StatsCardsPr
       </div>
 
       {/* Woorden */}
-      <div className="rounded-xl p-4 text-center border border-purple/12 bg-[linear-gradient(160deg,_theme(colors.purple/0.15)_0%,_theme(colors.purple/0.04)_100%)] transition-all hover:translate-y-[-2px] hover:shadow-[0_0_30px_theme(colors.purple/0.15)]">
+      <div className="rounded-xl p-4 text-center border border-purple/12 bg-[linear-gradient(160deg,rgba(147,112,219,0.15)_0%,rgba(147,112,219,0.04)_100%)] transition-all hover:translate-y-[-2px] hover:shadow-[0_0_30px_rgba(147,112,219,0.15)]">
         <div className="text-xl mb-1.5">📚</div>
         <div className="text-2xl font-extrabold text-purple-light leading-none">
           {wordsLearned}
@@ -30,7 +30,7 @@ export function StatsCards({ xp, wordsLearned, sessionsCompleted }: StatsCardsPr
       </div>
 
       {/* Sessies */}
-      <div className="rounded-xl p-4 text-center border border-green/12 bg-[linear-gradient(160deg,_theme(colors.green/0.15)_0%,_theme(colors.green/0.04)_100%)] transition-all hover:translate-y-[-2px] hover:shadow-[0_0_30px_theme(colors.green/0.15)]">
+      <div className="rounded-xl p-4 text-center border border-green/12 bg-[linear-gradient(160deg,rgba(74,222,128,0.15)_0%,rgba(74,222,128,0.04)_100%)] transition-all hover:translate-y-[-2px] hover:shadow-[0_0_30px_rgba(74,222,128,0.15)]">
         <div className="text-xl mb-1.5">✅</div>
         <div className="text-2xl font-extrabold text-green leading-none">
           {sessionsCompleted}

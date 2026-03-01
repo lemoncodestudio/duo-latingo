@@ -53,6 +53,7 @@
   --color-teal-dark: #2BC4B4;
   --color-teal-fg: #042a27;
   --color-teal-btn: #1a6b63;
+  --color-teal-glow: rgba(64, 224, 208, 0.25);
 
   /* Purple */
   --color-purple: #9370DB;
@@ -73,6 +74,7 @@
   --color-rose: #FB7185;
   --color-rose-dark: #F43F5E;
   --color-rose-btn: #be123c;
+  --color-rose-glow: rgba(251, 113, 133, 0.25);
 
   /* Ocean (info / blue) */
   --color-ocean: #38BDF8;

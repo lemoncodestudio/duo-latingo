@@ -23,7 +23,7 @@ export function Navbar({ streak = 0, displayName }: NavbarProps) {
     <header className="sticky top-0 z-50 flex items-center justify-between px-5 py-3 bg-background/85 backdrop-blur-xl saturate-[1.4] border-b border-teal/8">
       {/* Left: Brand */}
       <Link href="/dashboard" className="flex items-center gap-2.5">
-        <Mascot expression="happy" size={36} className="drop-shadow-[0_0_8px_theme(colors.teal/0.3)]" />
+        <Mascot expression="happy" size={36} className="drop-shadow-[0_0_8px_rgba(64,224,208,0.3)]" />
         <span
           className="font-extrabold text-xl tracking-tight bg-clip-text text-transparent"
           style={{ backgroundImage: "var(--gradient-hero)" }}
@@ -63,7 +63,7 @@ export function Navbar({ streak = 0, displayName }: NavbarProps) {
           </div>
         )}
         <Link href="/profile">
-          <div className="w-9 h-9 rounded-full border-2 border-teal bg-card flex items-center justify-center font-extrabold text-sm text-teal shadow-[0_0_12px_theme(colors.teal/0.2)]">
+          <div className="w-9 h-9 rounded-full border-2 border-teal bg-card flex items-center justify-center font-extrabold text-sm text-teal shadow-[0_0_12px_rgba(64,224,208,0.2)]">
             {initial}
           </div>
         </Link>

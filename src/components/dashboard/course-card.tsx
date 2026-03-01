@@ -13,10 +13,10 @@ interface CourseCardProps {
 }
 
 const variantStyles: Record<ColorVariant, string> = {
-  teal: "bg-[linear-gradient(135deg,_theme(colors.teal),_theme(colors.teal-dark))] shadow-[0_4px_12px_theme(colors.teal/0.3)]",
-  purple: "bg-[linear-gradient(135deg,_theme(colors.purple),_theme(colors.purple-dark))] shadow-[0_4px_12px_theme(colors.purple/0.3)]",
-  green: "bg-[linear-gradient(135deg,_theme(colors.green),_theme(colors.green-dark))] shadow-[0_4px_12px_theme(colors.green/0.3)]",
-  coral: "bg-[linear-gradient(135deg,_theme(colors.rose),_theme(colors.rose-dark))] shadow-[0_4px_12px_theme(colors.rose/0.3)]",
+  teal: "bg-[linear-gradient(135deg,#40E0D0,#2BC4B4)] shadow-[0_4px_12px_rgba(64,224,208,0.3)]",
+  purple: "bg-[linear-gradient(135deg,#9370DB,#7C5BBF)] shadow-[0_4px_12px_rgba(147,112,219,0.3)]",
+  green: "bg-[linear-gradient(135deg,#4ADE80,#22C55E)] shadow-[0_4px_12px_rgba(74,222,128,0.3)]",
+  coral: "bg-[linear-gradient(135deg,#FB7185,#F43F5E)] shadow-[0_4px_12px_rgba(251,113,133,0.3)]",
 };
 
 const variants: ColorVariant[] = ["teal", "purple", "green", "coral"];
@@ -51,9 +51,9 @@ export function CourseCard({
 
   return (
     <Link href={`/courses/${course.id}`}>
-      <div className="relative flex items-start gap-3.5 p-[18px] bg-[linear-gradient(180deg,_theme(colors.card)_0%,_theme(colors.secondary)_100%)] border border-teal/12 rounded-xl cursor-pointer transition-all hover:translate-y-[-2px] hover:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3)] hover:border-teal/25 overflow-hidden group">
+      <div className="relative flex items-start gap-3.5 p-[18px] bg-[linear-gradient(180deg,#152548_0%,#0f1f3a_100%)] border border-teal/12 rounded-xl cursor-pointer transition-all hover:translate-y-[-2px] hover:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3)] hover:border-teal/25 overflow-hidden group">
         {/* Hover glow overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,_theme(colors.teal/0.08)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(64,224,208,0.08)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Course icon */}
         <div

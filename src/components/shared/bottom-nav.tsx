@@ -14,6 +14,9 @@ const navItems = [
 export function BottomNav() {
   const pathname = usePathname();
 
+  // Hide bottom nav during practice sessions (full-screen experience)
+  if (pathname.startsWith("/practice")) return null;
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-background/92 backdrop-blur-2xl saturate-150 border-t border-teal/8 z-50 md:hidden">
       <div className="flex items-center justify-around h-[56px] px-4 pb-[env(safe-area-inset-bottom,0px)]">

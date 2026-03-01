@@ -157,7 +157,7 @@ export default function PracticePage({ params }: Props) {
         />
       </div>
 
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex-1 flex items-center justify-center p-4 pb-48">
         <div className="w-full max-w-lg">
           {currentQuestion.type === "multiple_choice" ? (
             <MultipleChoice

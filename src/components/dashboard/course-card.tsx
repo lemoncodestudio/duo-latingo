@@ -10,6 +10,7 @@ interface CourseCardProps {
   wordCount: number;
   chapterCount: number;
   wordsLearned?: number;
+  creatorName?: string;
 }
 
 const variantStyles: Record<ColorVariant, string> = {
@@ -45,6 +46,7 @@ export function CourseCard({
   wordCount,
   chapterCount,
   wordsLearned = 0,
+  creatorName,
 }: CourseCardProps) {
   const variant = getVariantForCourse(course.name);
   const emoji = getEmojiForCourse(course.name);
@@ -70,7 +72,13 @@ export function CourseCard({
           <div className="font-extrabold text-base text-foreground mb-0.5">
             {course.name}
           </div>
-          <div className="flex items-center gap-2.5 text-[0.78rem] text-dim font-semibold mb-2.5">
+          <div className="flex items-center gap-2.5 text-[0.78rem] text-dim font-semibold mb-2.5 flex-wrap">
+            {creatorName && (
+              <>
+                <span>door {creatorName}</span>
+                <span className="w-[3px] h-[3px] rounded-full bg-dim" />
+              </>
+            )}
             <span>
               {chapterCount} {chapterCount === 1 ? "hoofdstuk" : "hoofdstukken"}
             </span>

@@ -29,6 +29,9 @@
 - [SignOutButton](#signoutbutton)
 - [AmbientParticles](#ambientparticles)
 
+### Browse
+- [EnrollButton](#enrollbutton)
+
 ### Dashboard
 - [StreakDisplay](#streakdisplay)
 - [StatsCards](#statscards)
@@ -540,6 +543,42 @@ import { AmbientParticles } from "@/components/shared/ambient-particles";
 
 ---
 
+## Browse
+
+---
+
+### EnrollButton
+
+**Bestand:** `src/components/browse/enroll-button.tsx`
+**Beschrijving:** Button voor inschrijven op een cursus, of badge die enrollment-status toont. Client component.
+
+#### Props
+
+| Prop | Type | Default | Beschrijving |
+|------|------|---------|-------------|
+| `courseId` | `string` | — | ID van de cursus |
+| `isEnrolled` | `boolean` | — | Of de gebruiker al ingeschreven is |
+
+#### Gedrag
+- `isEnrolled = true` → toont `Badge` met "Ingeschreven" (teal)
+- `isEnrolled = false` → toont `Button variant="duo" size="sm"` met "Inschrijven"
+- Bij klik: insert in `user_courses`, dan `router.refresh()`
+
+#### Design Tokens
+- Enrolled badge: `color.primary.default/15` bg, `color.primary.default` text, `color.primary.default/20` border
+- Button: `Button variant="duo" size="sm"` (zie [Button](#button))
+
+#### Voorbeeld
+
+```tsx
+import { EnrollButton } from "@/components/browse/enroll-button";
+
+<EnrollButton courseId="course-123" isEnrolled={false} />
+<EnrollButton courseId="course-456" isEnrolled={true} />
+```
+
+---
+
 ## Dashboard
 
 ---
@@ -647,6 +686,7 @@ import { CourseProgressBar } from "@/components/dashboard/course-progress-bar";
 | `wordCount` | `number` | — | Totaal aantal woorden |
 | `chapterCount` | `number` | — | Aantal hoofdstukken |
 | `wordsLearned` | `number` | `0` | Voortgang |
+| `creatorName` | `string` | — | Optioneel: toon "door {naam}" onder info |
 
 #### Automatische logica
 - **Emoji**: bepaald op basis van cursusnaam (Spaans -> flag, Latijn -> tempel, etc.)

@@ -23,6 +23,21 @@ export async function POST(request: Request) {
     );
   }
 
+  // Check enrollment
+  const { data: enrollment } = await supabase
+    .from("user_courses")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("course_id", courseId)
+    .maybeSingle();
+
+  if (!enrollment) {
+    return NextResponse.json(
+      { error: "Je bent niet ingeschreven voor deze cursus" },
+      { status: 403 }
+    );
+  }
+
   // Get all chapters for this course
   const { data: chapters } = await supabase
     .from("chapters")

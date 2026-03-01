@@ -37,6 +37,11 @@ export default function NewCoursePage() {
       return;
     }
 
+    // Auto-enroll creator
+    await supabase
+      .from("user_courses")
+      .insert({ user_id: user.id, course_id: data.id });
+
     router.push(`/courses/${data.id}`);
   };
 

@@ -204,6 +204,22 @@ export interface Database {
         Update: Record<string, never>;
         Relationships: [];
       };
+      user_courses: {
+        Row: {
+          id: string;
+          user_id: string;
+          course_id: string;
+          enrolled_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          course_id: string;
+          enrolled_at?: string;
+        };
+        Update: Record<string, never>;
+        Relationships: [];
+      };
       uploads: {
         Row: {
           id: string;
@@ -251,4 +267,5 @@ export type Vocabulary = Database["public"]["Tables"]["vocabulary"]["Row"];
 export type UserWordProgress = Database["public"]["Tables"]["user_word_progress"]["Row"];
 export type PracticeSession = Database["public"]["Tables"]["practice_sessions"]["Row"];
 export type PracticeAnswer = Database["public"]["Tables"]["practice_answers"]["Row"];
+export type UserCourse = Database["public"]["Tables"]["user_courses"]["Row"];
 export type Upload = Database["public"]["Tables"]["uploads"]["Row"];

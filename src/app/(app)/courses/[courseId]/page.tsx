@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StartPracticeButton } from "@/components/practice/start-practice-button";
+import { EnrollButton } from "@/components/browse/enroll-button";
 
 interface Props {
   params: Promise<{ courseId: string }>;
@@ -12,6 +13,9 @@ interface Props {
 export default async function CourseDetailPage({ params }: Props) {
   const { courseId } = await params;
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: course } = await supabase
     .from("courses")
@@ -20,6 +24,29 @@ export default async function CourseDetailPage({ params }: Props) {
     .single();
 
   if (!course) notFound();
+
+  const isOwner = course.user_id === user!.id;
+
+  // Check enrollment
+  const { data: enrollment } = await supabase
+    .from("user_courses")
+    .select("id")
+    .eq("user_id", user!.id)
+    .eq("course_id", courseId)
+    .maybeSingle();
+
+  const isEnrolled = !!enrollment;
+
+  // Get creator name
+  let creatorName = "Onbekend";
+  if (!isOwner) {
+    const { data: creatorProfile } = await supabase
+      .from("profiles")
+      .select("display_name")
+      .eq("id", course.user_id)
+      .single();
+    creatorName = creatorProfile?.display_name || "Onbekend";
+  }
 
   const { data: chapters } = await supabase
     .from("chapters")
@@ -39,6 +66,7 @@ export default async function CourseDetailPage({ params }: Props) {
   );
 
   const totalWords = chaptersWithCounts.reduce((sum, c) => sum + c.wordCount, 0);
+  const canPractice = (isOwner || isEnrolled) && totalWords >= 4;
 
   return (
     <div className="max-w-lg mx-auto space-y-6">
@@ -51,43 +79,64 @@ export default async function CourseDetailPage({ params }: Props) {
           {course.description && (
             <p className="text-white/60 mt-1">{course.description}</p>
           )}
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center gap-2 mt-3 flex-wrap">
             <Badge className="bg-white/10 text-white/80 border-white/[0.08] hover:bg-white/15">
               {chaptersWithCounts.length} hoofdstukken
             </Badge>
             <Badge className="bg-white/10 text-white/80 border-white/[0.08] hover:bg-white/15">
               {totalWords} woorden
             </Badge>
+            {!isOwner && (
+              <Badge className="bg-white/10 text-white/80 border-white/[0.08] hover:bg-white/15">
+                door {creatorName}
+              </Badge>
+            )}
           </div>
         </div>
       </div>
 
       <div className="px-4 space-y-6">
-        {totalWords >= 4 && (
+        {/* Enrollment CTA for non-owners */}
+        {!isOwner && !isEnrolled && (
+          <div className="flex items-center justify-between p-4 bg-card rounded-2xl border border-teal/12">
+            <p className="text-sm font-semibold text-muted-foreground">
+              Schrijf je in om te oefenen
+            </p>
+            <EnrollButton courseId={courseId} isEnrolled={false} />
+          </div>
+        )}
+
+        {canPractice && (
           <StartPracticeButton courseId={courseId} />
         )}
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold">Hoofdstukken</h2>
-            <Link href={`/courses/${courseId}/upload`}>
-              <Button variant="duo" size="sm">
-                + Woorden toevoegen
-              </Button>
-            </Link>
+            {isOwner && (
+              <Link href={`/courses/${courseId}/upload`}>
+                <Button variant="duo" size="sm">
+                  + Woorden toevoegen
+                </Button>
+              </Link>
+            )}
           </div>
 
           {chaptersWithCounts.length === 0 ? (
             <div className="text-center py-8 bg-card rounded-2xl border border-white/[0.08]">
               <p className="font-bold text-lg">Nog geen hoofdstukken</p>
               <p className="text-sm text-muted-foreground mt-1">
-                Upload een foto van je werkboek om te beginnen
+                {isOwner
+                  ? "Upload een foto van je werkboek om te beginnen"
+                  : "Deze cursus heeft nog geen content"}
               </p>
-              <Link href={`/courses/${courseId}/upload`}>
-                <Button variant="duo" className="mt-4">
-                  Woorden toevoegen
-                </Button>
-              </Link>
+              {isOwner && (
+                <Link href={`/courses/${courseId}/upload`}>
+                  <Button variant="duo" className="mt-4">
+                    Woorden toevoegen
+                  </Button>
+                </Link>
+              )}
             </div>
           ) : (
             chaptersWithCounts.map((chapter) => (

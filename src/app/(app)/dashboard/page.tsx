@@ -18,11 +18,33 @@ export default async function DashboardPage() {
     .eq("id", user!.id)
     .single();
 
-  const { data: courses } = await supabase
-    .from("courses")
-    .select("*")
-    .eq("user_id", user!.id)
-    .order("created_at", { ascending: false });
+  // Get enrolled course IDs
+  const { data: enrollments } = await supabase
+    .from("user_courses")
+    .select("course_id")
+    .eq("user_id", user!.id);
+
+  const enrolledIds = (enrollments || []).map((e) => e.course_id);
+
+  // Fetch enrolled courses
+  const { data: courses } = enrolledIds.length > 0
+    ? await supabase
+        .from("courses")
+        .select("*")
+        .in("id", enrolledIds)
+        .order("created_at", { ascending: false })
+    : { data: [] };
+
+  // Fetch creator profiles for non-owned courses
+  const otherCreatorIds = [...new Set(
+    (courses || []).filter((c) => c.user_id !== user!.id).map((c) => c.user_id)
+  )];
+  const { data: creatorProfiles } = otherCreatorIds.length > 0
+    ? await supabase.from("profiles").select("id, display_name").in("id", otherCreatorIds)
+    : { data: [] };
+  const creatorMap = new Map(
+    (creatorProfiles || []).map((p) => [p.id, p.display_name])
+  );
 
   // Get word counts & learned counts per course
   const courseStats = await Promise.all(
@@ -62,11 +84,16 @@ export default async function DashboardPage() {
         }
       }
 
+      const creatorName = course.user_id !== user!.id
+        ? (creatorMap.get(course.user_id) || undefined)
+        : undefined;
+
       return {
         course,
         chapterCount: chapterIds.length,
         wordCount,
         wordsLearned,
+        creatorName,
       };
     })
   );
@@ -160,6 +187,12 @@ export default async function DashboardPage() {
         <div className="mt-5 animate-in delay-5">
           <div className="flex items-center justify-between mb-3.5">
             <h2 className="text-lg font-extrabold">Mijn cursussen</h2>
+            <Link
+              href="/courses"
+              className="text-sm font-bold text-teal hover:text-teal/80 transition-colors"
+            >
+              Alle cursussen
+            </Link>
           </div>
 
           {courseStats.length === 0 ? (
@@ -177,13 +210,14 @@ export default async function DashboardPage() {
             </div>
           ) : (
             <div className="flex flex-col gap-3">
-              {courseStats.map(({ course, chapterCount, wordCount, wordsLearned: wl }) => (
+              {courseStats.map(({ course, chapterCount, wordCount, wordsLearned: wl, creatorName }) => (
                 <CourseCard
                   key={course.id}
                   course={course}
                   wordCount={wordCount}
                   chapterCount={chapterCount}
                   wordsLearned={wl}
+                  creatorName={creatorName}
                 />
               ))}
             </div>

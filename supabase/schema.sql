@@ -104,6 +104,15 @@ create table public.practice_answers (
   created_at timestamptz not null default now()
 );
 
+-- User course enrollments
+create table public.user_courses (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references auth.users on delete cascade not null,
+  course_id uuid references public.courses on delete cascade not null,
+  enrolled_at timestamptz not null default now(),
+  unique(user_id, course_id)
+);
+
 -- Uploads
 create table public.uploads (
   id uuid primary key default uuid_generate_v4(),
@@ -123,17 +132,18 @@ alter table public.vocabulary enable row level security;
 alter table public.user_word_progress enable row level security;
 alter table public.practice_sessions enable row level security;
 alter table public.practice_answers enable row level security;
+alter table public.user_courses enable row level security;
 alter table public.uploads enable row level security;
 
--- Profiles: users can read/update own profile
-create policy "Users can view own profile" on public.profiles
-  for select using (auth.uid() = id);
+-- Profiles: all authenticated users can read, own user can update
+create policy "Authenticated users can view profiles" on public.profiles
+  for select using (auth.uid() is not null);
 create policy "Users can update own profile" on public.profiles
   for update using (auth.uid() = id);
 
--- Courses: users can CRUD own courses
-create policy "Users can view own courses" on public.courses
-  for select using (auth.uid() = user_id);
+-- Courses: all authenticated users can read, owner can write
+create policy "Authenticated users can view all courses" on public.courses
+  for select using (auth.uid() is not null);
 create policy "Users can create courses" on public.courses
   for insert with check (auth.uid() = user_id);
 create policy "Users can update own courses" on public.courses
@@ -141,11 +151,9 @@ create policy "Users can update own courses" on public.courses
 create policy "Users can delete own courses" on public.courses
   for delete using (auth.uid() = user_id);
 
--- Chapters: users can CRUD chapters of own courses
-create policy "Users can view chapters of own courses" on public.chapters
-  for select using (
-    exists (select 1 from public.courses where id = chapters.course_id and user_id = auth.uid())
-  );
+-- Chapters: all authenticated users can read, owner can write
+create policy "Authenticated users can view all chapters" on public.chapters
+  for select using (auth.uid() is not null);
 create policy "Users can create chapters" on public.chapters
   for insert with check (
     exists (select 1 from public.courses where id = chapters.course_id and user_id = auth.uid())
@@ -159,15 +167,9 @@ create policy "Users can delete own chapters" on public.chapters
     exists (select 1 from public.courses where id = chapters.course_id and user_id = auth.uid())
   );
 
--- Vocabulary: users can CRUD vocab of own courses
-create policy "Users can view vocabulary of own courses" on public.vocabulary
-  for select using (
-    exists (
-      select 1 from public.chapters c
-      join public.courses co on co.id = c.course_id
-      where c.id = vocabulary.chapter_id and co.user_id = auth.uid()
-    )
-  );
+-- Vocabulary: all authenticated users can read, owner can write
+create policy "Authenticated users can view all vocabulary" on public.vocabulary
+  for select using (auth.uid() is not null);
 create policy "Users can create vocabulary" on public.vocabulary
   for insert with check (
     exists (
@@ -192,6 +194,14 @@ create policy "Users can delete own vocabulary" on public.vocabulary
       where c.id = vocabulary.chapter_id and co.user_id = auth.uid()
     )
   );
+
+-- User courses: users can manage own enrollments
+create policy "Users can view own enrollments" on public.user_courses
+  for select using (auth.uid() = user_id);
+create policy "Users can enroll themselves" on public.user_courses
+  for insert with check (auth.uid() = user_id);
+create policy "Users can unenroll themselves" on public.user_courses
+  for delete using (auth.uid() = user_id);
 
 -- User word progress: users can CRUD own progress
 create policy "Users can view own progress" on public.user_word_progress
@@ -250,3 +260,10 @@ create index idx_user_word_progress_next_review on public.user_word_progress(use
 create index idx_practice_sessions_user on public.practice_sessions(user_id);
 create index idx_practice_answers_session on public.practice_answers(session_id);
 create index idx_uploads_chapter on public.uploads(chapter_id);
+create index idx_user_courses_user on public.user_courses(user_id);
+create index idx_user_courses_course on public.user_courses(course_id);
+
+-- Backfill: auto-enroll existing course owners
+insert into public.user_courses (user_id, course_id)
+select user_id, id from public.courses
+on conflict do nothing;
